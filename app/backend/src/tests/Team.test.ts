@@ -22,4 +22,22 @@ describe('Teams test', () => {
     expect(status).to.equal(200);
     expect(body).to.deep.equal(teams);
   })
+
+  it('Should return a team by id', async function() {
+    sinon.stub(SequelizeTeam, 'findOne').resolves(team as any);
+
+    const { status, body } = await chai.request(app).get('/teams/1')
+
+    expect(status).to.equal(200);
+    expect(body).to.deep.equal(team);
+  })
+
+  it('Should return "NOT_FOUND" if the team doesnt exist', async function() {
+    sinon.stub(SequelizeTeam, 'findOne').resolves(null);
+
+    const { status, body } = await chai.request(app).get('/teams/999');
+
+    expect(status).to.equal(404);
+    expect(body.message).to.equal('Team 999 not found');
+  })
 })

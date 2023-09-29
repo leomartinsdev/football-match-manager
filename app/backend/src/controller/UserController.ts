@@ -17,4 +17,8 @@ export default class UserController {
 
     return res.status(200).json(serviceResponse.data);
   }
+
+  userRole = (req: Request, res: Response) => {
+    res.status(200).json({ role: req.body.role });
+  };
 }

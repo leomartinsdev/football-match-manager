@@ -13,14 +13,14 @@ export default class UserService {
   ) { }
 
   public async verifyLogin(login: Login): Promise<ServiceResponse<Token>> {
-    if (!login.email || !login.password) {
-      return { status: 'BAD_REQUEST', data: { message: 'All fields must be filled' } };
-    }
+    // if (!login.email || !login.password) {
+    //   return { status: 'BAD_REQUEST', data: { message: 'All fields must be filled' } };
+    // }
 
     const foundUser = await this.userModel.findOne(login.email);
 
     if (!foundUser || !bcrypt.compareSync(login.password, foundUser.password)) {
-      return { status: 'UNAUTHORIZED', data: { message: 'email or password invalid' } };
+      return { status: 'UNAUTHORIZED', data: { message: 'Invalid email or password' } };
     }
 
     const { id, password } = foundUser;

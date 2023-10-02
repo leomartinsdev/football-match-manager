@@ -1,5 +1,4 @@
 import { ITeam } from './ITeam';
-// import { NewEntity } from '../index';
 
 export interface ITeamModel {
   // create(data: Partial<ITeam>): Promise<ITeam>,

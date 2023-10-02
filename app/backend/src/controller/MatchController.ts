@@ -8,7 +8,6 @@ export default class MatchController {
 
   public async getAllMatches(req: Request, res: Response) {
     const { inProgress } = req.query;
-    console.log('--- LOG: ', inProgress);
     let serviceResponse;
     if (inProgress) {
       const isProgressTrue = inProgress === 'true'; // Retorna true se inProgress for True, e false se for False
@@ -18,5 +17,12 @@ export default class MatchController {
     }
 
     res.status(200).json(serviceResponse.data);
+  }
+
+  public async finishMatch(req: Request, res: Response) {
+    const { id } = req.params;
+    const serviceResponse = await this.matchService.finishMatch(Number(id));
+
+    return res.status(200).json(serviceResponse.data);
   }
 }

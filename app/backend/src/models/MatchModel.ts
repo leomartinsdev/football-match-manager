@@ -7,6 +7,12 @@ import { NewEntity } from '../Interfaces/index';
 export default class MatchModel implements IMatchModel {
   private model = SequelizeMatch;
 
+  async create(data: NewEntity<IMatch>): Promise<IMatch> {
+    const dbData = await this.model.create(data);
+    const { id, homeTeamId, homeTeamGoals, awayTeamId, awayTeamGoals, inProgress }: IMatch = dbData;
+    return { id, homeTeamId, homeTeamGoals, awayTeamId, awayTeamGoals, inProgress };
+  }
+
   async findAll(inProgress?: boolean): Promise<IMatch[]> {
     const dbData = await this.model.findAll({
       where: inProgress !== undefined ? { inProgress } : {},

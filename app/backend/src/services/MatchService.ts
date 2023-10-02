@@ -1,4 +1,5 @@
 import MatchModel from '../models/MatchModel';
+import { NewEntity } from '../Interfaces/index';
 import { IMatch } from '../Interfaces/Matches/IMatch';
 import { IMatchModel } from '../Interfaces/Matches/IMatchModel';
 import { ServiceResponse } from '../Interfaces/ServiceResponse';
@@ -7,6 +8,11 @@ export default class MatchService {
   constructor(
     private matchModel: IMatchModel = new MatchModel(),
   ) {}
+
+  public async createMatch(data: NewEntity<IMatch>): Promise<ServiceResponse<IMatch>> {
+    const newMatch = await this.matchModel.create(data);
+    return { status: 'CREATED', data: newMatch };
+  }
 
   public async getAllMatches(inProgress?: boolean): Promise<ServiceResponse<IMatch[]>> {
     const allMatches = await this.matchModel.findAll(inProgress);

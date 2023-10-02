@@ -1,10 +1,23 @@
 import { Request, Response } from 'express';
 import MatchService from '../services/MatchService';
+import mapStatusHTTP from '../utils/mapStatusHTTP';
 
 export default class MatchController {
   constructor(
     private matchService = new MatchService(),
   ) {}
+
+  public async createMatch(req: Request, res: Response) {
+    const inProgress = true;
+    req.body = { ...req.body, inProgress };
+
+    console.log('---LOG: ', req.body);
+
+    const serviceResponse = await this.matchService
+      .createMatch(req.body);
+
+    return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
+  }
 
   public async getAllMatches(req: Request, res: Response) {
     const { inProgress } = req.query;
@@ -23,7 +36,7 @@ export default class MatchController {
     const { id } = req.params;
     const serviceResponse = await this.matchService.finishMatch(Number(id));
 
-    return res.status(200).json(serviceResponse.data);
+    return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
   }
 
   public async updateMatch(req: Request, res: Response) {
@@ -33,6 +46,6 @@ export default class MatchController {
     const serviceResponse = await this.matchService
       .updateMatch(Number(id), homeTeamGoals, awayTeamGoals);
 
-    return res.status(200).json(serviceResponse.data);
+    return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
   }
 }

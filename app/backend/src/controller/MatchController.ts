@@ -11,8 +11,6 @@ export default class MatchController {
     const inProgress = true;
     req.body = { ...req.body, inProgress };
 
-    console.log('---LOG: ', req.body);
-
     const serviceResponse = await this.matchService
       .createMatch(req.body);
 

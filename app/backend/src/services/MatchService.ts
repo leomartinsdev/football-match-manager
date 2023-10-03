@@ -10,6 +10,13 @@ export default class MatchService {
   ) {}
 
   public async createMatch(data: NewEntity<IMatch>): Promise<ServiceResponse<IMatch>> {
+    const checkTeam1 = await this.matchModel.findById(data.homeTeamId);
+    const checkTeam2 = await this.matchModel.findById(data.awayTeamId);
+
+    if (checkTeam1 === null || checkTeam2 === null) {
+      return { status: 'NOT_FOUND', data: { message: 'There is no team with such id!' } };
+    }
+
     const newMatch = await this.matchModel.create(data);
     return { status: 'CREATED', data: newMatch };
   }
